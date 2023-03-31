@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+// The Model class is a subclass of the Document class.
 const NotesSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
