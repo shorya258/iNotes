@@ -9,14 +9,16 @@ const App = () => {
     <>
       <NoteState>
         <Navigation />
-        <Switch>
-          <Route exact path="/about">
-            <About />
-          </Route>
-          <Route exact path="/">
-            <Home />
-          </Route>
-        </Switch>
+        <div className="container">
+          <Switch>
+            <Route exact path="/about">
+              <About />
+            </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
       </NoteState>
     </>
   );
