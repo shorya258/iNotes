@@ -10,15 +10,16 @@ export const AddNote = () => {
   });
   const handleClick = (e) => {
     e.preventDefault();
+    console.log(note.title, note.description, note.tag);
     addNote(note.title, note.description, note.tag);
   };
   const onChange = (e) => {
+    console.log(e.target.name + "val " + e.target.value);
     setNote({ ...note, [e.target.name]: e.target.value });
   };
   return (
     <div>
       <div className="container my-3">
-        <h2>This is home</h2>
         <form className="my-3">
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
@@ -42,24 +43,21 @@ export const AddNote = () => {
               className="form-control"
               id="description"
               name="description"
+              onChange={onChange}
             />
           </div>
-          <div className="mb-3 form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="exampleCheck1"
-            />
-            <label className="form-check-label" htmlFor="exampleCheck1">
-              Check me out
+          <div className="mb-3">
+            <label htmlFor="tag" className="form-label">
+              Tag
             </label>
+            <input type="text" className="form-control" id="tag" name="tag" />
           </div>
           <button
             type="submit"
             className="btn btn-primary"
             onClick={handleClick}
           >
-            Submit
+            Add
           </button>
         </form>
       </div>

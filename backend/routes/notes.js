@@ -10,6 +10,7 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
   const notes = await Note.find({ user: req.user.id });
   res.json(notes);
 });
+
 //Route 2: Add a new note using: POST "api/notes/addnotes". Login required
 router.post(
   "/addnote",
@@ -22,11 +23,13 @@ router.post(
   fetchuser,
   async (req, res) => {
     try {
+      console.log(req.body, "req");
       const { title, description, tag } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
+      // new entity for mongo
       const note = new Note({ title, description, tag, user: req.user.id });
       // The save() method returns a promise. If save() succeeds, the promise resolves to the document that was saved.
       const saveNote = await note.save();
@@ -80,16 +83,16 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 router.delete("/deletenote/:id", fetchuser, async (req, res) => {
   try {
     //create a newNote object
-    const newNote = {};
-    if (title) {
-      newNote.title = title;
-    }
-    if (description) {
-      newNote.description = description;
-    }
-    if (tag) {
-      newNote.tag = tag;
-    }
+    // const newNote = {};
+    // if (title) {
+    //   newNote.title = title;
+    // }
+    // if (description) {
+    //   newNote.description = description;
+    // }
+    // if (tag) {
+    //   newNote.tag = tag;
+    // }
 
     // find the note to be updated and delete it
     let note = await Note.findById(req.params.id);
