@@ -2,9 +2,16 @@ import React from "react";
 // import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export const Navigation = () => {
+  let history = useHistory();
+
   let location = useLocation();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    history.push("/login");
+  };
   // useEffect(() => {
   //   console.log(location.pathname);
   // }, [location]);
@@ -49,14 +56,20 @@ export const Navigation = () => {
               </Link>
             </li>
           </ul>
-          <form className="d-flex ">
-            <Link className="btn btn-primary mx-2" to="/login" role="button">
-              Login
-            </Link>
-            <Link className="btn btn-primary mx-2" to="/signup" role="button">
-              Signup
-            </Link>
-          </form>
+          {!localStorage.getItem("token") ? (
+            <form className="d-flex ">
+              <Link className="btn btn-primary mx-2" to="/login" role="button">
+                Login
+              </Link>
+              <Link className="btn btn-primary mx-2" to="/signup" role="button">
+                Signup
+              </Link>
+            </form>
+          ) : (
+            <button onClick={handleLogout} className="btn btn-primary mx-2">
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

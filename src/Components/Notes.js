@@ -2,11 +2,19 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import { AddNote } from "./AddNote";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 export default function Notes(props) {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
+  let history = useHistory();
+
   useEffect(() => {
-    getNotes();
+    if (localStorage.getItem("token")) {
+      getNotes();
+    } else {
+      history.push("/login");
+    }
     // eslint-disable-next-line
   }, []);
   const ref = useRef(null);
@@ -17,6 +25,7 @@ export default function Notes(props) {
     edescription: "",
     etag: "dafault",
   });
+
   const updateNote = (currentNote) => {
     ref.current.click();
     setNote({
