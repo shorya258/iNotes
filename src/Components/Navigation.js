@@ -9,7 +9,7 @@ export const Navigation = () => {
   //   console.log(location.pathname);
   // }, [location]);
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Navbar
@@ -49,16 +49,13 @@ export const Navigation = () => {
               </Link>
             </li>
           </ul>
-          <form className="d-flex">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
+          <form className="d-flex ">
+            <Link className="btn btn-primary mx-2" to="/login" role="button">
+              Login
+            </Link>
+            <Link className="btn btn-primary mx-2" to="/signup" role="button">
+              Signup
+            </Link>
           </form>
         </div>
       </div>

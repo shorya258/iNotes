@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import { AddNote } from "./AddNote";
-export default function Notes() {
+export default function Notes(props) {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
   useEffect(() => {
@@ -29,6 +29,7 @@ export default function Notes() {
   const handleClick = (e) => {
     editNote(note.id, note.etitle, note.edescription, note.etag);
     refClose.current.click();
+    props.showAlert("Updated successfully! ", "success");
     console.log("updating the note..", note);
   };
   const onChange = (e) => {
@@ -36,13 +37,14 @@ export default function Notes() {
   };
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={props.showAlert} />
       <button
         type="button"
         ref={ref}
         className="btn btn-primary"
-        data-toggle="modal"
-        data-target="#exampleModal"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        hidden={true}
       >
         Launch demo modal
       </button>
@@ -63,7 +65,7 @@ export default function Notes() {
               <button
                 type="button"
                 className="close"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
@@ -122,7 +124,7 @@ export default function Notes() {
                 type="button"
                 ref={refClose}
                 className="btn btn-secondary"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
               >
                 Close
               </button>
@@ -148,7 +150,12 @@ export default function Notes() {
           </div>
           {notes.map((note) => {
             return (
-              <NoteItem key={note._id} updateNote={updateNote} note={note} />
+              <NoteItem
+                key={note._id}
+                updateNote={updateNote}
+                note={note}
+                showAlert={props.showAlert}
+              />
             );
           })}
         </div>
