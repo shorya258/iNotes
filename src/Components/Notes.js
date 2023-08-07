@@ -4,28 +4,36 @@ import NoteItem from "./NoteItem";
 import { AddNote } from "./AddNote";
 export default function Notes() {
   const context = useContext(noteContext);
-  const [note, setNote] = useState({
-    title: "",
-    description: "",
-    tag: "default",
-  });
-  const { notes, getNotes, addNote } = context;
+  const { notes, getNotes, editNote } = context;
   useEffect(() => {
     getNotes();
     // eslint-disable-next-line
   }, []);
-  const updateNote = () => {
-    console.log("note is working");
+  const ref = useRef(null);
+  const refClose = useRef(null);
+  const [note, setNote] = useState({
+    id: "",
+    etitle: "",
+    edescription: "",
+    etag: "dafault",
+  });
+  const updateNote = (currentNote) => {
     ref.current.click();
+    setNote({
+      id: currentNote._id,
+      etitle: currentNote.title,
+      edescription: currentNote.description,
+      etag: currentNote.tag,
+    });
   };
   const handleClick = (e) => {
-    e.preventDefault();
-    addNote(note.title, note.description, note.tag);
+    editNote(note.id, note.etitle, note.edescription, note.etag);
+    refClose.current.click();
+    console.log("updating the note..", note);
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
-  const ref = useRef(null);
   return (
     <>
       <AddNote />
@@ -75,6 +83,7 @@ export default function Notes() {
                       className="form-control"
                       id="etitle"
                       name="etitle"
+                      value={note.etitle}
                       aria-describedby="emailHelp"
                       onChange={onChange}
                     />
@@ -88,6 +97,7 @@ export default function Notes() {
                       className="form-control"
                       id="edescription"
                       name="edescription"
+                      value={note.edescription}
                       onChange={onChange}
                     />
                   </div>
@@ -100,27 +110,30 @@ export default function Notes() {
                       className="form-control"
                       id="etag"
                       name="etag"
+                      value={note.etag}
+                      onChange={onChange}
                     />
                   </div>
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    onClick={handleClick}
-                  >
-                    Add
-                  </button>
                 </form>
               </div>
             </div>
             <div className="modal-footer">
               <button
                 type="button"
+                ref={refClose}
                 className="btn btn-secondary"
                 data-dismiss="modal"
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                disabled={
+                  note.etitle.length < 5 || note.edescription.length < 5
+                }
+                type="button"
+                className="btn btn-primary"
+                onClick={handleClick}
+              >
                 Update Note
               </button>
             </div>
@@ -130,6 +143,9 @@ export default function Notes() {
       <div>
         <div className="row my-3">
           <h2>Your notes</h2>
+          <div className="container">
+            {notes.length === 0 && " No notes to display"}
+          </div>
           {notes.map((note) => {
             return (
               <NoteItem key={note._id} updateNote={updateNote} note={note} />

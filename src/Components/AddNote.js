@@ -6,15 +6,14 @@ export const AddNote = () => {
   const [note, setNote] = useState({
     title: "",
     description: "",
-    tag: "default",
+    tag: "",
   });
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(note.title, note.description, note.tag);
     addNote(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "" });
   };
   const onChange = (e) => {
-    console.log(e.target.name + "val " + e.target.value);
     setNote({ ...note, [e.target.name]: e.target.value });
   };
   return (
@@ -30,7 +29,7 @@ export const AddNote = () => {
               className="form-control"
               id="title"
               name="title"
-              aria-describedby="emailHelp"
+              value={note.title}
               onChange={onChange}
             />
           </div>
@@ -43,6 +42,7 @@ export const AddNote = () => {
               className="form-control"
               id="description"
               name="description"
+              value={note.description}
               onChange={onChange}
             />
           </div>
@@ -50,9 +50,17 @@ export const AddNote = () => {
             <label htmlFor="tag" className="form-label">
               Tag
             </label>
-            <input type="text" className="form-control" id="tag" name="tag" />
+            <input
+              type="text"
+              className="form-control"
+              id="tag"
+              name="tag"
+              value={note.tag}
+              onChange={onChange}
+            />
           </div>
           <button
+            disabled={note.title.length < 5 || note.description.length < 5}
             type="submit"
             className="btn btn-primary"
             onClick={handleClick}

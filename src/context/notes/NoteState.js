@@ -33,20 +33,11 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const responseJson = await response.json();
-    console.log("response", response);
-    console.log("responseJson", responseJson);
+    // console.log("response", response);
+    // console.log("responseJson", responseJson);
 
     // todo: api call
     console.log("Adding new node");
-    // const note = {
-    //   _id: responseJson._id,
-    //   user: responseJson.user,
-    //   title: title,
-    //   description: description,
-    //   tag: tag,
-    //   date: "",
-    //   __v: 0,
-    // };
     setNotes(notes.concat(responseJson));
   };
 
@@ -78,7 +69,7 @@ const NoteState = (props) => {
     // API CALL
     // eslint-disable-next-line
     const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "auth-token":
@@ -87,16 +78,19 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     // const json = response.json({ title, description, tag });
-
+    // in react, we cannot directly change the state without reloading, hence new var for edited notes
+    let newNotes = JSON.parse(JSON.stringify(notes));
     // Logic to edit in client
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
+    for (let index = 0; index < newNotes.length; index++) {
+      const element = newNotes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        newNotes[index].tag = tag;
+        break;
       }
     }
+    setNotes(newNotes);
   };
   return (
     <NoteContext.Provider
